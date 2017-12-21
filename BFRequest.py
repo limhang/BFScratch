@@ -17,11 +17,13 @@ class BFRequest():
         if (self.method == "GET"):
             # 如果没有设置header,通过hasattr判断
             if (hasattr(self,'header')):
-                websiteOriginalContent = requests.get(self.url,headers=self.header)
-                print(websiteOriginalContent)
-                binary = websiteOriginalContent.content.decode('utf-8')
-                print(binary)
+                websiteOriginalContent = requests.get(self.url,headers=self.header).text
+                return websiteOriginalContent
+
             else:
-                print('has not setting header')
-                websiteOriginalContent = requests.get(self.url)
-                print(websiteOriginalContent)
+                # 获取抓取到的原始网页
+                # websiteOriginalContent = requests.get(self.url).content.decode('utf-8')
+                websiteOriginalContent = requests.get(self.url).text
+                # 这里还必须有异常捕获模块
+
+                return websiteOriginalContent
