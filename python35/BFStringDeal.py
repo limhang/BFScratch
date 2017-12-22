@@ -40,4 +40,37 @@ class BFStringDeal(object):
 
             # 含有img的情况以后处理
 
+
             return hasDealTag
+
+    @classmethod
+    # 删除头尾tag标签信息  -- 目前还有一点错误，就是删除尾部tag，不一定删除的是最后的
+    # eg:传入<div class="fasdfd">something so many <div>ssss</div></div>
+    #    得到something so many <div>ssss</div>
+    def deleteFrontAndBackendTag(cls,content):
+        # 删除tag前缀
+        frontTag = "<.*?>"
+        regxFront = re.compile(frontTag)
+        frontDelContent = regxFront.sub("",content,1)
+
+        # 删除tag后缀 == 这里只是需要删除</xx>就可，不一定会删除最后一个
+        backendTag = "</.*?>"
+        regxBack = re.compile(backendTag)
+        backendDelContent = regxBack.sub("",frontDelContent,1)
+        return backendDelContent
+
+
+
+    @classmethod
+    # 删除给定文本的所有tag
+    # eg:传入<div class="fasdfd">something so many <div>ssss</div></div>
+    #    得到something so many ssss
+    def deleteAllTag(cls, content):
+        frontTag = "<.*?>"
+        regxFront = re.compile(frontTag)
+        frontDelContent = regxFront.sub("",content)
+
+        backendTag = "</.*?>"
+        regxBack = re.compile(backendTag)
+        backendDelContent = regxBack.sub("",frontDelContent)
+        return backendDelContent
