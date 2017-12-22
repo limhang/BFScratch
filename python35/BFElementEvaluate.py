@@ -47,4 +47,5 @@ class BFElementEvaluate():
         # 评分系统, 得到最终候选人的node节点位置，基于root
         contentNodeNumber = max(self.candidateEvaluateDict.items(), key=operator.itemgetter(1))[0]
 
-        print(etree.tostring(divHandleNode[contentNodeNumber]).decode("utf-8"))
+        handleResult = etree.tostring(divHandleNode[contentNodeNumber]).decode("utf-8")
+        return handleResult
