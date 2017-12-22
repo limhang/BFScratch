@@ -22,7 +22,7 @@ class BFElementEvaluate():
         # 存放所有divNODE的列表 -- 基本上所有mainContent一定是div结构
         divHandleNode = self.rootNode.xpath("//div")
 
-        # 处理候选人基本信息
+        # 处理候选人基本信息 ---- 【初选】
         for i in range(0,len(divHandleNode)):
             divHandleText = etree.tostring(divHandleNode[i]).decode("utf-8")
             # print(divHandleText)
@@ -31,12 +31,37 @@ class BFElementEvaluate():
                 # print(divHandleText)
                 self.candidataBaseInfoDict.update({i:divHandleText})
 
-
-        # 处理候选人打分结果字典
+        # text文本判断 ---- 【第一轮竞选】
         for key in self.candidataBaseInfoDict:
-            textLengthValue = len(self.candidataBaseInfoDict[key]) * 2
-            self.candidateEvaluateDict.update({key:textLengthValue})
+            removeTagContent = BFStringDeal.deleteAllTag(self.candidataBaseInfoDict[key])
+            # 如果文本大于400，直接满分
+            if len(removeTagContent) > 400:
+                self.candidateEvaluateDict.update({key:70})
+            else:
+                textLengthValue = len(removeTagContent) / 400 * 100 * 0.7
+                self.candidateEvaluateDict.update({key:textLengthValue})
 
+        # node子节点数量判断 ---- 【第二轮竞选】
+        for key in self.candidataBaseInfoDict:
+            nodeChildrenNum = len(divHandleNode[key].getchildren())
+            # 如果子node的个数大于10，那么直接满分
+            originalValue = self.candidateEvaluateDict[key]
+            if nodeChildrenNum > 9:
+                self.candidateEvaluateDict.update({key:(originalValue + 15)})
+            else:
+                renewValue = nodeChildrenNum * 10 * 0.15
+                self.candidateEvaluateDict.update({key:(originalValue + renewValue)})
+
+        # p标签数量判断 ---- 【第三轮竞选】
+        for key in self.candidataBaseInfoDict:
+            # 如果子node的个数大于10，那么直接满分
+            NodePNum = len(divHandleNode[key].xpath("./p"))
+            originalValue = self.candidateEvaluateDict[key]
+            if NodePNum > 5:
+                self.candidateEvaluateDict.update({key:(originalValue + 15)})
+            else:
+                renewValue = NodePNum * 100 / 6 * 0.15
+                self.candidateEvaluateDict.update({key:(originalValue + renewValue)})
 
         # 查看下候选人基本信息
         # print(self.candidataBaseInfoDict)

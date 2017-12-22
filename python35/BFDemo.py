@@ -15,9 +15,9 @@ from BFElementEvaluate import BFElementEvaluate
 
 
 ####################网络请求部分--使用BFRequest####################
-bfrequestM = BFRequest('http://www.chinadaily.com.cn/a/201712/20/WS5a39ce2ea31008cf16da265d.html','GET')
+# bfrequestM = BFRequest('http://www.chinadaily.com.cn/a/201712/20/WS5a39ce2ea31008cf16da265d.html','GET')
 
-# bfrequestM = BFRequest('http://blog.coderhelper.cn/%E7%BD%91%E7%BB%9C%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%9E%E6%8E%A5%E7%9A%84%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0.html','GET')
+bfrequestM = BFRequest('http://blog.coderhelper.cn/%E7%BD%91%E7%BB%9C%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%9E%E6%8E%A5%E7%9A%84%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0.html','GET')
 
 
 
