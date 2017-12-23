@@ -1,8 +1,16 @@
+# loadDependency是依赖导入文件，是需要最先引入的，如果有其他文件夹的库，请在该模块导入
+import loadDependency
+# 网络请求模块
 from BFRequest import BFRequest
+# 手动定位模块
 from BFLocateElement import BFLocateElement
-from BFStringDeal import BFStringDeal
+# 自动定位元素模块
 from BFElementEvaluate import BFElementEvaluate
+# 文件处理模块，读写等多种操作
 from BFFileSystem import BFFileSystem
+# 字符串处理模块，大多是类方法
+from BFStringDeal import BFStringDeal
+
 # 使用网址初始化类
 # 设置请求头
 # test = BFRequest('https://www.reuters.com/article/us-northkorea-missiles/south-korea-says-any-delay-in-military-drills-depends-on-north-koreas-behavior-idUSKBN1EE0FK','GET')
