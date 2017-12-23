@@ -1,6 +1,7 @@
 from BFRequest import BFRequest
 from BFLocateElement import BFLocateElement
 from BFStringDeal import BFStringDeal
+from BFElementEvaluate import BFElementEvaluate
 # 使用网址初始化类
 # 设置请求头
 # test = BFRequest('https://www.reuters.com/article/us-northkorea-missiles/south-korea-says-any-delay-in-military-drills-depends-on-north-koreas-behavior-idUSKBN1EE0FK','GET')
@@ -14,24 +15,34 @@ from BFStringDeal import BFStringDeal
 
 
 ####################网络请求部分--使用BFRequest####################
-bfrequestM = BFRequest('http://www.chinadaily.com.cn/a/201712/20/WS5a39ce2ea31008cf16da265d.html','GET')
+# bfrequestM = BFRequest('http://www.chinadaily.com.cn/a/201712/20/WS5a39ce2ea31008cf16da265d.html','GET')
+
+bfrequestM = BFRequest('http://blog.coderhelper.cn/%E7%BD%91%E7%BB%9C%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%9E%E6%8E%A5%E7%9A%84%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0.html','GET')
+
+
+
 source = bfrequestM.getWebsiteContent()
 # 输出给外界source -- html文本
 
 ####################元素定位模块--使用BFLocateElement####################
-content = "//div[@class='main_art'][1]/div[@class='picshow']/div[@id='Content']"  # 使用xpath helper获取
-bflocationM = BFLocateElement('dom',content,source)
-xpathSource = bflocationM.locate()
+# content = "//div[@class='main_art'][1]/div[@class='picshow']/div[@id='Content']"  # 使用xpath helper获取
+# bflocationM = BFLocateElement('dom',content,source)
+# xpathSource = bflocationM.locate()
 # 输出给外界xpathSource -- 已经选择好的预期文本
+
+
+####################评分系统模块--使用BFElementEvaluate####################
+bfelementEvaluate = BFElementEvaluate(source)
+mainContent = bfelementEvaluate.getMainContent()
+# 输出给外界xpathSource -- 已经选择好的预期文本
+
 
 
 ####################html文本处理部分--使用BFStringDeal####################
 # 去除\n等无效字符
-dealOne = BFStringDeal.specialTXT(xpathSource)
+dealOne = BFStringDeal.specialTXT(mainContent)
 # 设置，自认为合理的文档排序 -- 每一个网站都可以自定义该处正则表达式
 elementList = BFStringDeal.getAssignContent(dealOne,"<p*?>.*?</p>|<img.*?/>|<span.*?>.*?</span>")
 for item in elementList:
     print(BFStringDeal.deleteHtmlTag(item))
-    # print(item)
-
 # 预期给外界一个合理的元素列表
