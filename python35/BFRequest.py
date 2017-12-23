@@ -17,13 +17,13 @@ class BFRequest():
         if (self.method == "GET"):
             # 如果没有设置header,通过hasattr判断
             if (hasattr(self,'header')):
-                websiteOriginalContent = requests.get(self.url,headers=self.header).text
+                websiteOriginalContent = requests.get(self.url,headers=self.header).content.decode('utf-8')
                 return websiteOriginalContent
 
             else:
                 # 获取抓取到的原始网页
                 # websiteOriginalContent = requests.get(self.url).content.decode('utf-8')
-                websiteOriginalContent = requests.get(self.url).text
+                websiteOriginalContent = requests.get(self.url).content.decode('utf-8')
                 # 这里还必须有异常捕获模块
 
                 return websiteOriginalContent

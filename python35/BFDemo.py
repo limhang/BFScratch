@@ -2,6 +2,7 @@ from BFRequest import BFRequest
 from BFLocateElement import BFLocateElement
 from BFStringDeal import BFStringDeal
 from BFElementEvaluate import BFElementEvaluate
+from BFFileSystem import BFFileSystem
 # 使用网址初始化类
 # 设置请求头
 # test = BFRequest('https://www.reuters.com/article/us-northkorea-missiles/south-korea-says-any-delay-in-military-drills-depends-on-north-koreas-behavior-idUSKBN1EE0FK','GET')
@@ -15,12 +16,11 @@ from BFElementEvaluate import BFElementEvaluate
 
 
 ####################网络请求部分--使用BFRequest####################
-# bfrequestM = BFRequest('http://www.chinadaily.com.cn/a/201712/20/WS5a39ce2ea31008cf16da265d.html','GET')
+htmlSourceEngList = "http://www.chinadaily.com.cn/a/201712/20/WS5a39ce2ea31008cf16da265d.html"
+htmlSourceHangBlog = "http://blog.coderhelper.cn/%E7%BD%91%E7%BB%9C%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%9E%E6%8E%A5%E7%9A%84%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0.html"
+htmlSourceCailiao = "http://www.runoob.com/python/python-files-io.html"
 
-bfrequestM = BFRequest('http://blog.coderhelper.cn/%E7%BD%91%E7%BB%9C%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%9E%E6%8E%A5%E7%9A%84%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0.html','GET')
-
-
-
+bfrequestM = BFRequest(htmlSourceHangBlog,'GET')
 source = bfrequestM.getWebsiteContent()
 # 输出给外界source -- html文本
 
@@ -29,7 +29,6 @@ source = bfrequestM.getWebsiteContent()
 # bflocationM = BFLocateElement('dom',content,source)
 # xpathSource = bflocationM.locate()
 # 输出给外界xpathSource -- 已经选择好的预期文本
-
 
 ####################评分系统模块--使用BFElementEvaluate####################
 bfelementEvaluate = BFElementEvaluate(source)
@@ -44,5 +43,10 @@ dealOne = BFStringDeal.specialTXT(mainContent)
 # 设置，自认为合理的文档排序 -- 每一个网站都可以自定义该处正则表达式
 elementList = BFStringDeal.getAssignContent(dealOne,"<p*?>.*?</p>|<img.*?/>|<span.*?>.*?</span>")
 for item in elementList:
-    print(BFStringDeal.deleteHtmlTag(item))
+    # print(BFStringDeal.deleteHtmlTag(item))
+
+    # 写入文件
+    BFFileSystem.writeDataToFile(BFStringDeal.deleteHtmlTag(item),'demo.txt')
 # 预期给外界一个合理的元素列表
+
+####################文件操作部分--使用BFFileSystem####################
