@@ -10,6 +10,8 @@ from BFElementEvaluate import BFElementEvaluate
 from BFFileSystem import BFFileSystem
 # 字符串处理模块，大多是类方法
 from BFStringDeal import BFStringDeal
+# 数据库操作模块
+from BFDBOperate import BFDBOperate
 
 # system loadDependency
 import os
@@ -37,7 +39,37 @@ class BFScratch():
     def handleWebsiteDetail(self,dic,filePath):
         # 通过该函数获取到网页的原始信息
         handleInstance = scratchWebsiteNewContent(dic,filePath)
-        handleInstance.compareContent()
+        url = handleInstance.compareContent()
+        print(url)
+        if len(url) > 1:
+            # 使用scratchDemo数据库，建2个表一个是网址和内容url和是否需要更新判断关联的表；一个是内容url+maincontent+时间 的这种表
+
+            # CREATE TABLE `website` (
+            #     `id` int(10) NOT NULL AUTO_INCREMENT,
+            #     `website` varchar(255) COLLATE utf8_bin NOT NULL,
+            #     `contentUrl` varchar(255) COLLATE utf8_bin NOT NULL,
+            #     `update` boolean not null default 0,
+            #     PRIMARY KEY (`id`)
+            # ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin
+            # AUTO_INCREMENT=1 ;
+
+            # CREATE TABLE `websiteDetail` (
+            #     `id` int(10) NOT NULL AUTO_INCREMENT,
+            #     `contentUrl` varchar(255) COLLATE utf8_bin NOT NULL,
+            #     `time` varchar(100) COLLATE utf8_bin NOT NULL,
+            #     `mainContent` varchar(1024) COLLATE utf8_bin NOT NULL,
+            #     PRIMARY KEY (`id`)
+            # ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin
+            # AUTO_INCREMENT=1 ;
+            dbBase = BFDBOperate('scratchDemo','9981aa','root','localhost')
+            sqli = "INSERT INTO `website` (`website`, `contentUrl`) VALUES (%s, %s)"
+            info = (dic['url'], url)
+            dbBase.insertDB(sqli, info)
+
+            # 我们先建立第一个表，完成操作之后，在处理第二个表
+
+        else:
+            print("this time has no url to update")
 
 
     # 获取给定网址的核心内容--也就是article main content
@@ -75,9 +107,11 @@ class scratchWebsiteNewContent():
         # 比较现在的内容和之前存储的内容是否一致
         if compareNew == self.dic["oldCompareContent"]:
             print("do not scratch noting change")
+            return ''
         else:
             print("begin scratch ====")
-            self.contentChangeScratchUrl()
+            url = self.contentChangeScratchUrl()
+            return url
         # 不管比较的内容是否发生变化，我们都需要更新比较元素到字典中
         self.dic.update({"oldCompareContent":compareNew})
         # 将新的字典转化为json，存到filePath中
@@ -94,6 +128,7 @@ class scratchWebsiteNewContent():
         positionNode = bflocationM.locate()
         url = positionNode[2].attrib['href']
         print(url)
+        return url
 
 
 
