@@ -1,5 +1,5 @@
 from lxml import etree
-
+from BFLog import BFLog
 class BFLocateElement():
     """BFLocateElement overview
 
@@ -31,8 +31,35 @@ class BFLocateElement():
             the contents when positioning operation is completed
         """
         if (self.contentType == 'dom'):
-            node = etree.HTML(self.originalSource).xpath(self.analyzingConditions)[0]
-            return etree.tostring(node).decode("utf-8")
+            BFLog.bfecho('=== original source ===' + self.originalSource)
+            BFLog.bfecho('=== analyzingConditions ===' + self.analyzingConditions)
+            # whether analyzingConditions is very accurately
+            conditionList = self.analyzingConditions.split('***')
+            if len(conditionList) == 1:
+                nodeList = etree.HTML(self.originalSource).xpath(self.analyzingConditions)
+            else:
+                # 这个地方比较难，比较难。。。记住先清空数组，然后在判断是否得到的数据len是不是0
+                loopNum = len(conditionList)
+                nodeList = list()
+                for i in range(loopNum):
+                    # 第一次执行这个操作
+                    if len(nodeList) == 0:
+                        nodeList = etree.HTML(self.originalSource).xpath(conditionList[i])
+                    # 非第一次执行该操作
+                    else:
+                        # 将nodeList缓存起来，然后清空，接下来赋值好用
+                        storeList = nodeList
+                        nodeList = []
+                        for j in range(len(storeList)):
+                            resultList = storeList[j].xpath('.' + conditionList[i])
+                            # 如果lxml得到的list不是空的话，就向nodeList中添加
+                            if len(resultList) > 0:
+                                # 循环添加每个list中的item
+                                for item in resultList:
+                                    nodeList.append(item)
+
+            return nodeList
+
         elif (self.contentType == 'json'):
             print('use json')
         else:

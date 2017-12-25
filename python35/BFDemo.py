@@ -11,6 +11,9 @@ from BFFileSystem import BFFileSystem
 # 字符串处理模块，大多是类方法
 from BFStringDeal import BFStringDeal
 
+
+# system loadDependency
+import os
 # 使用网址初始化类
 # 设置请求头
 # test = BFRequest('https://www.reuters.com/article/us-northkorea-missiles/south-korea-says-any-delay-in-military-drills-depends-on-north-koreas-behavior-idUSKBN1EE0FK','GET')
@@ -31,6 +34,10 @@ htmlSourceruanyifeng = "http://www.ruanyifeng.com/blog/2017/12/image-and-wave-fi
 bfrequestM = BFRequest(htmlSourceruanyifeng,'GET')
 source = bfrequestM.getWebsiteContent()
 # 输出给外界source -- html文本
+
+####################文件读写系统--使用BFFileSystem####################
+dic = BFFileSystem.readJsonFolderSavedDic(os.getcwd() + '/' + 'targetWebsite')
+print(dic)
 
 ####################元素定位模块--使用BFLocateElement####################
 # content = "//div[@class='main_art'][1]/div[@class='picshow']/div[@id='Content']"  # 使用xpath helper获取
