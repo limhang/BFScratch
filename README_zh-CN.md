@@ -1,13 +1,15 @@
 # BFScratch
 
-[view README in English](./README.md)
+[中文查看](./README.md)
 
-这是一个处理新闻网站采集的框架，使用python开发。该项目依赖于`lxml`和`re`第三方。
+newspaper collected framework used python. BFScratch dependence `lxml` `re` ,thanks those genius
 
-## BFScratch框架概览
-BFScratch框架由以下几个模块组成
+---
 
-* **BFRequest**: 处理url网络请求，返回原始的html文本
-* **BFLocateElement**: 输入xpath的定位路径，返回一个xpath的node节点元素
-* **BFElementEvaluate**: BFLocateElement可以理解为手动处理元素定位，该模块是自动处理元素定位，这是BFScratch核心模块
-* **BFStringDeal**: 该模块主要负责字符串处理
+## BFScratch overview
+BFScratch include several modules.
+
+* **BFRequest**: handle URL request，return original HTML text
+* **BFLocateElement**: if you input the specify xpath location, this module will return Element located.
+* **BFElementEvaluate**: BFLocateElement seemed to be manual work for specify element location. you can also use this module that handle element location automatically. this is BFScratch central part.
+* **BFStringDeal**: this module work for string regx tasks.
