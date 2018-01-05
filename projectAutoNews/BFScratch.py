@@ -38,10 +38,12 @@ class BFScratch():
     # 这里类似集装箱，将要包含多种不同情况处理，每一个处理都是一个小函数
     def handleWebsiteDetail(self,dic,filePath):
         # 通过该函数获取到网页的原始信息
+        print(dic)
+        print(filePath)
         handleInstance = scratchWebsiteNewContent(dic,filePath)
-        url = handleInstance.compareContent()
-        print(url)
-        if len(url) > 1:
+        urlList = handleInstance.compareContent()
+        print(urlList)
+        if len(urlList) > 0:
             # 使用scratchDemo数据库，建2个表一个是网址和内容url和是否需要更新判断关联的表；一个是内容url+maincontent+时间 的这种表
 
             # CREATE TABLE `website` (
@@ -61,22 +63,16 @@ class BFScratch():
             #     PRIMARY KEY (`id`)
             # ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin
             # AUTO_INCREMENT=1 ;
-            dbBase = BFDBOperate('scratchDemo','9981aa','root','localhost')
-            sqli = "INSERT INTO `website` (`website`, `contentUrl`) VALUES (%s, %s)"
-            info = (dic['url'], url)
-            dbBase.insertDB(sqli, info)
+            for num in range(0,len(urlList)):
+                dbBase = BFDBOperate('scratchDemo','9981aa','root','localhost')
+                sqli = "INSERT INTO `website` (`website`, `contentUrl`) VALUES (%s, %s)"
+                info = (dic['url'], urlList[num])
+                dbBase.insertDB(sqli, info)
 
             # 我们先建立第一个表，完成操作之后，在处理第二个表
 
         else:
             print("this time has no url to update")
-
-
-    # 获取给定网址的核心内容--也就是article main content
-    # def getWebsiteMainContent(self):
-    #     # ####################评分系统模块--使用BFElementEvaluate####################
-    #     bfelementEvaluate = BFElementEvaluate(self.originalContent)
-    #     mainContent = bfelementEvaluate.getMainContent()
 
 
 
@@ -94,7 +90,6 @@ class scratchWebsiteNewContent():
         # 获取到原始的网址内容
         self.originalContent = bfrequestM.getWebsiteContent()
 
-
     # 存储比较内容信息（通过它，判断是否进行爬取操作）
     def compareContent(self):
         ###################元素定位模块--使用BFLocateElement####################
@@ -104,19 +99,20 @@ class scratchWebsiteNewContent():
         bflocationM = BFLocateElement('dom', positionIdentify, self.originalContent)
         positionNode = bflocationM.locate()
         compareNew = positionNode[0].text
+        print(compareNew)
+
+
         # 比较现在的内容和之前存储的内容是否一致
         if compareNew == self.dic["oldCompareContent"]:
             print("do not scratch noting change")
             return ''
         else:
             print("begin scratch ====")
-            url = self.contentChangeScratchUrl()
-            return url
-        # 不管比较的内容是否发生变化，我们都需要更新比较元素到字典中
-        self.dic.update({"oldCompareContent":compareNew})
-        # 将新的字典转化为json，存到filePath中
-        BFFileSystem.writeDataToFileCover(json.dumps(self.dic),self.filePath)
-
+            urlList = self.contentChangeScratchUrl()
+            # 将新的字典转化为json，存到filePath中
+            self.dic.update({"oldCompareContent":compareNew})
+            BFFileSystem.writeDataToFileCover(json.dumps(self.dic),self.filePath)
+            return urlList
 
     # 如果内容有改变，我们将拉取url网址到urlScratch池子
     def contentChangeScratchUrl(self):
@@ -126,9 +122,14 @@ class scratchWebsiteNewContent():
         # 获取指定内容
         bflocationM = BFLocateElement('dom', positionIdentify, self.originalContent)
         positionNode = bflocationM.locate()
-        url = positionNode[2].attrib['href']
-        print(url)
-        return url
+        # 保存没有重复的前5个，使用text和oldCompareContent比较
+        urlList = list()
+        for index in range(0,5):
+            if positionNode[index].text == self.dic["oldCompareContent"]:
+                break
+            else:
+                urlList.append(positionNode[index].attrib['href'])
+        return urlList
 
 
 
@@ -136,26 +137,3 @@ if __name__ == '__main__':
     instance = BFScratch()
     instance.readTargetWebsite()
     instance.handleWebsitesDicInfo()
-
-
-
-# # 输出给外界xpathSource -- 已经选择好的预期文本
-#
-
-# # 输出给外界xpathSource -- 已经选择好的预期文本
-#
-#
-#
-# ####################html文本处理部分--使用BFStringDeal####################
-# # 去除\n等无效字符
-# dealOne = BFStringDeal.specialTXT(mainContent)
-# # 设置，自认为合理的文档排序 -- 每一个网站都可以自定义该处正则表达式
-# elementList = BFStringDeal.getAssignContent(dealOne,"<p*?>.*?</p>|<img.*?/>|<span.*?>.*?</span>")
-# for item in elementList:
-#     # print(BFStringDeal.deleteHtmlTag(item))
-#
-#     # 写入文件
-#     BFFileSystem.writeDataToFile(BFStringDeal.deleteHtmlTag(item),'demo.txt')
-# # 预期给外界一个合理的元素列表
-#
-# ####################文件操作部分--使用BFFileSystem####################
