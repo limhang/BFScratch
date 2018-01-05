@@ -1,4 +1,4 @@
-#!/home/vagrant/data/test/bin/python
+#!/home/vagrant/data/projectAutoNews/bin/python
 
 import sys
 import getopt
