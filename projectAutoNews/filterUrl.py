@@ -1,16 +1,16 @@
 # 一。本地调试使用
 # loadDependency是依赖导入文件，是需要最先引入的，如果有其他文件夹的库，请在该模块导入
-import loadDependency
-# 网络请求模块
-from BFRequest import BFRequest
-# 手动定位模块
-from BFLocateElement import BFLocateElement
-# 自动定位元素模块
-from BFElementEvaluate import BFElementEvaluate
-# 文件处理模块，读写等多种操作
-from BFFileSystem import BFFileSystem
-# 数据库操作模块
-from BFDBOperate import BFDBOperate
+# import loadDependency
+# # 网络请求模块
+# from BFRequest import BFRequest
+# # 手动定位模块
+# from BFLocateElement import BFLocateElement
+# # 自动定位元素模块
+# from BFElementEvaluate import BFElementEvaluate
+# # 文件处理模块，读写等多种操作
+# from BFFileSystem import BFFileSystem
+# # 数据库操作模块
+# from BFDBOperate import BFDBOperate
 
 # 二。pip list BFScratch使用
 from BFScratch.BFRequest import BFRequest
