@@ -5,6 +5,8 @@ __pycache__/
 
 # configure
 bin/
+include/
+pip-selfcheck.json
 
 .DS_Store
 # C extensions
