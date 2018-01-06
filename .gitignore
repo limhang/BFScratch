@@ -3,6 +3,10 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+bin/
+include/
+pip-selfcheck.json
+
 .DS_Store
 # C extensions
 *.so
