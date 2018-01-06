@@ -1,3 +1,4 @@
+# 一。本地调试使用
 # loadDependency是依赖导入文件，是需要最先引入的，如果有其他文件夹的库，请在该模块导入
 import loadDependency
 # 网络请求模块
@@ -8,10 +9,16 @@ from BFLocateElement import BFLocateElement
 from BFElementEvaluate import BFElementEvaluate
 # 文件处理模块，读写等多种操作
 from BFFileSystem import BFFileSystem
-# 字符串处理模块，大多是类方法
-from BFStringDeal import BFStringDeal
 # 数据库操作模块
 from BFDBOperate import BFDBOperate
+
+# 二。pip list BFScratch使用
+from BFScratch.BFRequest import BFRequest
+from BFScratch.BFLocateElement import BFLocateElement
+from BFScratch.BFElementEvaluate import BFElementEvaluate
+from BFScratch.BFFileSystem import BFFileSystem
+from BFScratch.BFDBOperate import BFDBOperate
+
 
 # system loadDependency
 import os
@@ -48,9 +55,9 @@ class BFScratch():
 
             # CREATE TABLE `website` (
             #     `id` int(10) NOT NULL AUTO_INCREMENT,
-            #     `website` varchar(255) COLLATE utf8_bin NOT NULL,
+            #     `originalUrl` varchar(255) COLLATE utf8_bin NOT NULL,
             #     `contentUrl` varchar(255) COLLATE utf8_bin NOT NULL,
-            #     `update` boolean not null default 0,
+            #     `urlStatus` boolean not null default 0,
             #     PRIMARY KEY (`id`)
             # ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin
             # AUTO_INCREMENT=1 ;
@@ -59,13 +66,13 @@ class BFScratch():
             #     `id` int(10) NOT NULL AUTO_INCREMENT,
             #     `contentUrl` varchar(255) COLLATE utf8_bin NOT NULL,
             #     `time` varchar(100) COLLATE utf8_bin NOT NULL,
-            #     `mainContent` varchar(1024) COLLATE utf8_bin NOT NULL,
+            #     `mainContent` varchar(10240) COLLATE utf8_bin NOT NULL,
             #     PRIMARY KEY (`id`)
             # ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin
             # AUTO_INCREMENT=1 ;
             for num in range(0,len(urlList)):
                 dbBase = BFDBOperate('scratchDemo','9981aa','root','localhost')
-                sqli = "INSERT INTO `website` (`website`, `contentUrl`) VALUES (%s, %s)"
+                sqli = "INSERT INTO `website` (`originalUrl`, `contentUrl`) VALUES (%s, %s)"
                 info = (dic['url'], urlList[num])
                 dbBase.insertDB(sqli, info)
 
@@ -133,7 +140,7 @@ class scratchWebsiteNewContent():
 
 
 
-if __name__ == '__main__':
-    instance = BFScratch()
-    instance.readTargetWebsite()
-    instance.handleWebsitesDicInfo()
+# if __name__ == '__main__':
+#     instance = BFScratch()
+#     instance.readTargetWebsite()
+#     instance.handleWebsitesDicInfo()

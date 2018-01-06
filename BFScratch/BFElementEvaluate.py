@@ -1,5 +1,6 @@
 import re
 from BFScratch.BFStringDeal import BFStringDeal
+# from BFStringDeal import BFStringDeal
 from lxml import etree
 import operator
 

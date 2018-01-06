@@ -28,9 +28,22 @@ class BFDBOperate():
             self.connect.commit()
             self.connect.close()
 
-    def selectData(self, sql):
+    def selectData(self, sql, info):
         with self.connect.cursor() as cursor:
             # Read a single record
-            cursor.execute()
-            result = cursor.fetchone()
+            cursor.execute(sql, info)
+            result = cursor.fetchall()
             return result
+
+
+    def updateDB(self, sql, info):
+        with self.connect.cursor() as cursor:
+            # Read a single record
+            cursor.execute(sql, info)
+            self.connect.commit()
+            self.connect.close()
+
+
+
+
+            

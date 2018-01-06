@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='BFScratch',
-    version='0.0.5',
+    version='0.0.6',
     packages = ['BFScratch'],
     url = "http://blog.coderhelper.cn",
     author = "limhang",

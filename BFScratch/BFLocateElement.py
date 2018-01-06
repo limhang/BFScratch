@@ -1,5 +1,7 @@
 from lxml import etree
 from BFScratch.BFLog import BFLog
+# from BFLog import BFLog
+# import BFLog
 class BFLocateElement():
     """BFLocateElement overview
 
